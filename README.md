@@ -58,6 +58,6 @@ npm run ios        # iOS (macOS + Xcode required)
 Wanna contribute and help others find spaces to be themselves? Here we tell you how to contribute!
 
 1. Tell you friends about Katze Social and talk about it on social media! That will help us to grow the community.
-2. Raise a pull request. Developer instructions can be found at DEVELOPER.md. See our CONTRIBUTING.md for PR tips and a checklist.
+2. Raise a pull request. Developer instructions can be found at ```DEVELOPER.md```. See our ```CONTRIBUTING.md``` for PR tips and a checklist.
 3. Create issues to help us debug the app.
 4. Donate via **PayPal (sadgabi20@gmail.com)** or **[Ko-fi](https://ko-fi.com/sadgabi)** to sustain the project.
