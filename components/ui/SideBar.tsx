@@ -23,7 +23,7 @@ export default function SideBar() {
                     position: "static",
                     width: "112px", 
                     height: "41px", 
-                    backgroundImage: "url(https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2Flogo_hori.svg?alt=media&token=7d4bc33f-06be-4298-b80a-41cde48a38ea)"
+                    backgroundImage: "url(./sidebar_logo.png)",
                 }}
             ></div>
             
