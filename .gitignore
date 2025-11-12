@@ -45,3 +45,5 @@ app-example
 # Custom
 .vscode/
 .firebaserc
+firebase.json
+functions/
