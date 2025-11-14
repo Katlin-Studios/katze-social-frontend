@@ -37,7 +37,7 @@ export default function SideBar() {
                 <SideBarButton title="add_thread" icon="library-add" isAddThread />
                 
                 <div title="Profile" style={{height: "calc(var(--num-measure) * 8)", width: "-webkit-fill-available", cursor: "pointer"}}>
-                    <UserSlot userInfo={{displayName: "SadGabi", username: "sadgabi20"}} slotStyle={{isRound: true}} />
+                    <UserSlot userInfo={{displayName: "SadGabi 🖤", username: "sadgabi20"}} slotStyle={{isRound: true}} />
                 </div>
             </div>
         </div>)
