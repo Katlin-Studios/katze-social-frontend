@@ -1,15 +1,9 @@
 interface UserIconProps {
-    imgUrl?: string;
-    className?: string;
-    style?: any;
+    imgUrl?: string,
 }
 
-export default function UserIcon({ imgUrl, className, style }: UserIconProps) {
+export default function UserIcon({ imgUrl }: UserIconProps) {
     return (
-        <div
-            className={className ?? 'user-icon bg-center bg-cover'}
-            role="img"
-            style={{ backgroundImage: `url(${imgUrl})`, ...(style || {}) }}
-        ></div>
-    );
+        <div className="user-icon" role="img" style={{backgroundImage: `url(${imgUrl})`}}></div>
+    )
 }
