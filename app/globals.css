@@ -199,6 +199,7 @@ input {
 }
 
 .user-icon {
+    min-width: calc((var(--num-measure) * 5) - 2px);
     width: calc((var(--num-measure) * 5) - 2px);
     height: calc((var(--num-measure) * 5) - 2px);
     border: solid 2px white;
@@ -401,6 +402,14 @@ input {
     height: calc(var(--num-measure) * 4.5);
     border-radius: var(--num-measure);
     box-shadow: 0 0 calc(var(--num-measure) * 1.5) 0 rgb(0, 0, 0);
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding-top: calc(var(--num-measure) * 3);
+    overflow: auto;
 }
 
 

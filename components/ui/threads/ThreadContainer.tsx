@@ -1,3 +1,12 @@
+import { MaterialIcons } from "@expo/vector-icons"
+import MediaContainer from "./MediaContainer"
+import ThreadStats from "./ThreadStats"
+
+export interface MediaContent {
+    src: string,
+    alt: string
+}
+
 interface ThreadContainerProps {
     displayName: string,
     username: string,
@@ -5,6 +14,10 @@ interface ThreadContainerProps {
     isUserVerified?: boolean,
     threadType?: 'common' | 'media' | 'poll' | 'audio' | 'advanced',
     textContent?: string,
+    mediaContent?: MediaContent[],
+    pollOptions?: string[],
+    audioContent?: string,
+    advancedContent?: React.ReactNode
 }
 
 export default function ThreadContainer({
@@ -14,36 +27,40 @@ export default function ThreadContainer({
     isUserVerified = false,
     threadType = 'common',
     textContent = "",
+    mediaContent,
 }: ThreadContainerProps) {
 
-    return(
-        <div className="flex gap-3 p-4 border-b border-gray-200 dark:border-gray-700">
+    return (
+        <div className="thread-container">
             {/* avatar */}
-            <div className="w-12 h-12 rounded-full bg-gray-300 dark:bg-gray-600 flex-shrink-0" />
+            <div role="img" className="user-icon" style={{backgroundImage: "url(https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2FynDtisc3_400x400.jpg?alt=media&token=e8a05d5d-09f4-48cf-ae19-343c9c405d9a)"}} />
             {/* content */}
-            <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900 dark:text-gray-100 truncate">
-                        {displayName}
-                    </span>
-                    {isUserVerified && (
-                        <span className="inline-flex items-center text-blue-600 bg-blue-50 dark:bg-blue-900/30 text-xs px-2 py-0.5 rounded-full">
-                            ✓
-                        </span>
-                    )}
-                    <span className="text-sm text-gray-500 dark:text-gray-400 truncate">
+            <div className="thread-content">
+                <div className="thread-user-info">
+                    <div className="thread-displayname">
+                        <a href={`/${username}`} className="thread-displayname-link">
+                            {displayName}
+                        </a>
+                        {isUserVerified && (
+                            <MaterialIcons
+                                name="verified"
+                                color="#35f374"
+                                size={16}
+                            />
+                        )}
+                    </div>
+                    <span className="thread-username">
                         @{username} · {timestamp}
                     </span>
                 </div>
-                <div className="mt-2 text-gray-800 dark:text-gray-200 text-sm">
+
+                <div className="thread-text-content">
                     {textContent}
                 </div>
-                {/* optional: thread type indicator */}
-                <div className="mt-2">
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                        {threadType}
-                    </span>
-                </div>
+
+                {threadType === 'media' && <MediaContainer mediaContent={mediaContent} />}
+            
+                <ThreadStats />
             </div>
         </div>
     )

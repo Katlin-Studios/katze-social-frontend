@@ -1,10 +1,11 @@
-import "@/app/globals.css";
-import Index from "@/app/index";
-import InfoBar from "@/components/ui/InfoBar";
-import SideBar from "@/components/ui/SideBar";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import "@/app/globals.css"
+import "@/styles/threads.css"
+import Index from "@/app/index"
+import InfoBar from "@/components/ui/InfoBar"
+import SideBar from "@/components/ui/SideBar"
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 export default function RootLayout() {
   return (<>
