@@ -1,5 +1,5 @@
 // Simple example API for local testing of the social frontend.
-// No external dependencies — run with: `node api/api.js` or `npm run api`.
+// No external dependencies — run with: `node api/api.ts` or `npm run api`.
 
 const http = require('http');
 const url = require('url');
@@ -20,7 +20,7 @@ interface Response {
 }
 
 interface MediaContent {
-  url: string,
+  src: string,
   alt?: string,
 }
 
@@ -30,17 +30,26 @@ interface UserData {
   username: string,
   isVerified: boolean,
   isOnline: boolean,
+  userAvatar?: string,
 }
 
+type KatzeThread = 'common' | 'media' | 'poll' | 'audio' | 'advanced'
+
 interface PostData {
-  threadType?: 'common' | 'media' | 'poll' | 'audio' | 'advanced',
   id: string,
   authorId: string,
-  textContent: string,
-  mediaContent?: MediaContent[],
   timeStamp: number,
+  threadType?: KatzeThread,
+  textContent?: string,
+  mediaContent?: MediaContent[],
   pollOptions?: string[],
   audioContent?: string,
+  advancedContent?: any,
+  likes: number,
+  reactions: object[],
+  weaves: number,
+  comments: object[],
+  bookmarks: number,
 }
 
 // In-memory example data
@@ -48,13 +57,63 @@ let users: UserData[]
 let posts: PostData[]
 
 users = [
-  { id: '1', displayName: 'SadGabi', username: 'sadgabi20', isVerified: true, isOnline: true },
-  { id: '2', displayName: 'CatLover', username: 'catlover', isVerified: false, isOnline: false },
+  {
+    id: '1',
+    displayName: 'SadGabi 🖤',
+    username: 'sadgabi20',
+    isVerified: true,
+    isOnline: true,
+    userAvatar: "https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2FynDtisc3_400x400.jpg?alt=media&token=e8a05d5d-09f4-48cf-ae19-343c9c405d9a"
+  },
+  {
+    id: '2',
+    displayName: 'CatLover',
+    username: 'catlover',
+    isVerified: false,
+    isOnline: false,
+    userAvatar: "https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2F1975636247331942400-v2-r736x736-s736x736.webp?alt=media&token=b25d18e1-31b3-4d80-9a1f-d8e1ea85a55d",
+  },
 ];
 
 posts = [
-  { id: 'p1', authorId: '1', textContent: 'Hello from SadGabi!', timeStamp: Date.now() - 1000 * 60 * 60 },
-  { id: 'p2', authorId: '2', textContent: 'I love cats 🐱', timeStamp: Date.now() - 1000 * 60 * 30 },
+  {
+    threadType: 'common',
+    id: 'p1',
+    authorId: '1',
+    textContent: "Hi! I'm new here, excited to meet new friends!",
+    timeStamp: Date.now() - 1000 * 60 * 60,
+    likes: 50,
+    reactions: [],
+    weaves: 28,
+    comments: [],
+    bookmarks: 12,
+  },
+  {
+    threadType: 'media',
+    id: 'p2',
+    authorId: '2',
+    textContent: 'I really like these images i found online!',
+    likes: 18,
+    reactions: [],
+    weaves: 13,
+    comments: [],
+    bookmarks: 9,
+    mediaContent: [
+      {
+        alt: "hi",
+        src: "https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2F00059-2055087321.png?alt=media&token=63164ea4-63e5-4a21-b7c2-ed92a74af4e4",
+      },
+      {
+        alt: "hi2",
+        src: "https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2F1975636247331942400-v2-r736x736-s736x736.webp?alt=media&token=b25d18e1-31b3-4d80-9a1f-d8e1ea85a55d",
+      },
+      {
+        alt: "hi3",
+        src: "https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2F-p00053-1164806123.png?alt=media&token=c0c86be8-8ecc-4dc0-aa9f-189a6973e275",
+      },
+    ],
+    timeStamp: Date.now() - 1000 * 60 * 30
+  },
 ];
 
 function jsonResponse(res: Response, statusCode: number, obj: any) {
@@ -136,7 +195,7 @@ const server = http.createServer(async (req: Request, res: Response) => {
       if (!body || !body.authorId || !body.content) return jsonResponse(res, 400, { error: 'authorId and content required' });
       const id = `p${posts.length + 1}`;
       let post: PostData;
-      post = { id, authorId: String(body.authorId), textContent: String(body.content), timeStamp: Date.now() };
+      post = { id, authorId: String(body.authorId), textContent: String(body.content), timeStamp: Date.now(), threadType: (body.threadType), mediaContent: (body.mediaContent), pollOptions: (body.pollOptions), audioContent: (body.audioContent), advancedContent: (body.advancedContent), likes: (body.likes), reactions: (body.reactions), weaves: (body.weaves), comments: (body.comments), bookmarks: (body.bookmarks) };
       posts.unshift(post);
       return jsonResponse(res, 201, { post });
     }
