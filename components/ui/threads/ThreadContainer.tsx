@@ -1,67 +1,104 @@
-import { MaterialIcons } from "@expo/vector-icons"
-import MediaContainer from "./MediaContainer"
-import ThreadStats from "./ThreadStats"
+import { useEffect, useState } from "react";
+import { MaterialIcons } from "@expo/vector-icons";
+import MediaContainer from "./MediaContainer";
+import ThreadStats from "./ThreadStats";
+import { apiGet } from "@/app/api";
 
 export interface MediaContent {
-    src: string,
-    alt: string
+  src: string;
+  alt: string;
 }
 
 interface ThreadContainerProps {
-    displayName: string,
-    username: string,
-    timestamp: string,
-    isUserVerified?: boolean,
-    threadType?: 'common' | 'media' | 'poll' | 'audio' | 'advanced',
-    textContent?: string,
-    mediaContent?: MediaContent[],
-    pollOptions?: string[],
-    audioContent?: string,
-    advancedContent?: React.ReactNode
+  authorId: string,
+  timestamp: string,
+  threadType?: "common" | "media" | "poll" | "audio" | "advanced",
+  textContent?: string,
+  mediaContent?: MediaContent[],
+  pollOptions?: string[],
+  audioContent?: string,
+  advancedContent?: React.ReactNode,
+  likes?: number,
+  reactions?: object[],
+  comments?: object[],
+  weaves?: number,
+  bookmarks?: number,
 }
 
 export default function ThreadContainer({
-    displayName,
-    username,
-    timestamp,
-    isUserVerified = false,
-    threadType = 'common',
-    textContent = "",
-    mediaContent,
+  authorId,
+  timestamp,
+  threadType = "common",
+  textContent = "",
+  mediaContent,
+  advancedContent,
+  likes = 0,
+  reactions = [],
+  comments = [],
+  weaves = 0,
+  bookmarks = 0
 }: ThreadContainerProps) {
+  const [userData, setUserData] = useState<{
+    username: string,
+    displayName: string,
+    isVerified: boolean,
+    avatar: string,
+  } | null>(null);
 
-    return (
-        <div className="thread-container">
-            {/* avatar */}
-            <div role="img" className="user-icon" style={{backgroundImage: "url(https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2FynDtisc3_400x400.jpg?alt=media&token=e8a05d5d-09f4-48cf-ae19-343c9c405d9a)"}} />
-            {/* content */}
-            <div className="thread-content">
-                <div className="thread-user-info">
-                    <div className="thread-displayname">
-                        <a href={`/${username}`} className="thread-displayname-link">
-                            {displayName}
-                        </a>
-                        {isUserVerified && (
-                            <MaterialIcons
-                                name="verified"
-                                color="#35f374"
-                                size={16}
-                            />
-                        )}
-                    </div>
-                    <span className="thread-username">
-                        @{username} · {timestamp}
-                    </span>
-                </div>
+  useEffect(() => {
+    async function getUserData() {
+      try {
+        const data = await apiGet(`/users/${authorId}`);
+        const user = data.user;
 
-                <div className="thread-text-content">
-                    {textContent}
-                </div>
+        setUserData({
+          username: user.username || "!!undefined!!",
+          displayName: user.displayName || "",
+          isVerified: user.isVerified || false,
+          avatar: user.userAvatar || "",
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
 
-                {threadType === 'media' && <MediaContainer mediaContent={mediaContent} />}
-            
-                <ThreadStats />
-            </div>
+    getUserData();
+  }, [authorId]);
+
+  if (!userData) {
+    return <div className="thread-container">Loading...</div>;
+  }
+
+  return (
+    <div className="thread-container">
+      {/* avatar */}
+      <div
+        role="img"
+        className="user-icon"
+        style={{ backgroundImage: `url(${userData.avatar})` }}
+      />
+      {/* content */}
+      <div className="thread-content">
+        <div className="thread-user-info">
+          <div className="thread-displayname">
+            <a href={`/${userData.username}`} className="thread-displayname-link">
+              {userData.displayName}
+            </a>
+            {userData.isVerified && (
+              <MaterialIcons name="verified" color="#35f374" size={16} />
+            )}
+          </div>
+          <span className="thread-username">
+            @{userData.username} · {timestamp}
+          </span>
         </div>
-    )
+
+        <div className="thread-text-content">{textContent}</div>
+
+        {threadType === "media" && <MediaContainer mediaContent={mediaContent} />}
+
+        <ThreadStats likes={likes} reactions={reactions} comments={comments} weaves={weaves} bookmarks={bookmarks} />
+      </div>
+    </div>
+  );
 }
