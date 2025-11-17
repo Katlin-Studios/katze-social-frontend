@@ -3,27 +3,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import MediaContainer from "./MediaContainer";
 import ThreadStats from "./ThreadStats";
 import { apiGet } from "@/app/api";
-
-export interface MediaContent {
-  src: string;
-  alt: string;
-}
-
-interface ThreadContainerProps {
-  authorId: string,
-  timestamp: string,
-  threadType?: "common" | "media" | "poll" | "audio" | "advanced",
-  textContent?: string,
-  mediaContent?: MediaContent[],
-  pollOptions?: string[],
-  audioContent?: string,
-  advancedContent?: React.ReactNode,
-  likes?: number,
-  reactions?: object[],
-  comments?: object[],
-  weaves?: number,
-  bookmarks?: number,
-}
+import { ThreadData } from "@/interfaces/threads";
 
 export default function ThreadContainer({
   authorId,
@@ -32,12 +12,12 @@ export default function ThreadContainer({
   textContent = "",
   mediaContent,
   advancedContent,
-  likes = 0,
+  likes = [],
   reactions = [],
   comments = [],
-  weaves = 0,
-  bookmarks = 0
-}: ThreadContainerProps) {
+  weaves = [],
+  bookmarks = []
+}: ThreadData) {
   const [userData, setUserData] = useState<{
     username: string,
     displayName: string,

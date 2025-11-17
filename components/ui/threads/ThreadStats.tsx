@@ -1,25 +1,18 @@
 import { MaterialIcons } from "@expo/vector-icons"
-
-interface ThreadStatsProps {
-    likes?: number,
-    reactions?: object[],
-    weaves?: number,
-    comments?: object[],
-    bookmarks?: number,
-}
+import { ThreadStats as ThreadStatsProps } from "@/interfaces/threads"
 
 export default function ThreadStats({
-    likes = 0,
+    likes = [],
     reactions = [],
-    weaves = 0,
+    weaves = [],
     comments = [],
-    bookmarks = 0,
+    bookmarks = [],
 }: ThreadStatsProps) {
     return (
         <div className="thread-stats">
             <button title="Like">
                 <MaterialIcons name="favorite-outline" size={18} color="white" />
-                <span>{likes}</span>
+                <span>{likes.length}</span>
             </button>
 
             <button title="React">
@@ -29,7 +22,7 @@ export default function ThreadStats({
 
             <button title="Weave">
                 <MaterialIcons name="route" size={18} color="white" />
-                <span>{weaves}</span>
+                <span>{weaves.length}</span>
             </button>
 
             <button title="Comment">
@@ -39,7 +32,7 @@ export default function ThreadStats({
 
             <button title="Bookmark">
                 <MaterialIcons name="bookmark-border" size={18} color="white" />
-                <span>{bookmarks}</span>
+                <span>{bookmarks.length}</span>
             </button>
 
             <button title="Share">
