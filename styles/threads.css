@@ -96,7 +96,6 @@
 }
 
 .thread-stats {
-    opacity: 0.5;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -108,6 +107,7 @@
 }
 
 .thread-stats button {
+    opacity: 0.5;
     display: flex;
     align-items: center;
     gap: calc(var(--num-measure) / 2);

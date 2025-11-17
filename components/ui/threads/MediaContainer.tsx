@@ -1,4 +1,4 @@
-import { MediaContent } from "./ThreadContainer"
+import { MediaContent } from "@/interfaces/threads"
 
 interface MediaContainerProps {
     mediaContent: MediaContent[] | undefined,
