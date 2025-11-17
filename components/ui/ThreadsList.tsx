@@ -4,13 +4,13 @@ import { timeAgo } from "@/app/utils";
 import { apiGet } from "@/app/api";
 
 export default function ThreadsList() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [threads, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const data = await apiGet("/posts");
-        setPosts(data.posts);
+        const data = await apiGet("/threads");
+        setPosts(data.threads);
       } catch (err) {
         console.error(err);
       }
@@ -21,7 +21,7 @@ export default function ThreadsList() {
 
   return (
     <div>
-      {posts.map((post, key) => (
+      {threads.map((post, key) => (
         <ThreadContainer
           key={key}
           authorId={post.authorId}

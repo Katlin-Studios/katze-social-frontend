@@ -3,58 +3,15 @@
 
 const http = require('http');
 const url = require('url');
+const { IncomingMessage, ServerResponse } = require("http");
+import { ThreadTypes } from "@/types/threads.ts";
+import { MediaContent, UserData, Reaction, ThreadWeave, Poll, AudioContent, ThreadData } from "./interfaces.ts";
 
 const PORT = process.env.PORT || 4000;
 
-interface Request {
-  method: 'GET' | 'POST' | 'OPTIONS',
-  url: string,
-  headers: { [key: string]: string },
-  on(event: 'data' | 'end' | 'error', callback: (chunk?: any) => void): void,
-  body?: any,
-}
-
-interface Response {
-  writeHead(statusCode: number, headers: { [key: string]: string }): void,
-  end(body?: string): void,
-}
-
-interface MediaContent {
-  src: string,
-  alt?: string,
-}
-
-interface UserData {
-  id: string,
-  displayName: string,
-  username: string,
-  isVerified: boolean,
-  isOnline: boolean,
-  userAvatar?: string,
-}
-
-type KatzeThread = 'common' | 'media' | 'poll' | 'audio' | 'advanced'
-
-interface PostData {
-  id: string,
-  authorId: string,
-  timeStamp: number,
-  threadType?: KatzeThread,
-  textContent?: string,
-  mediaContent?: MediaContent[],
-  pollOptions?: string[],
-  audioContent?: string,
-  advancedContent?: any,
-  likes: number,
-  reactions: object[],
-  weaves: number,
-  comments: object[],
-  bookmarks: number,
-}
-
 // In-memory example data
 let users: UserData[]
-let posts: PostData[]
+let threads: ThreadData[]
 
 users = [
   {
@@ -73,31 +30,56 @@ users = [
     isOnline: false,
     userAvatar: "https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2F1975636247331942400-v2-r736x736-s736x736.webp?alt=media&token=b25d18e1-31b3-4d80-9a1f-d8e1ea85a55d",
   },
+  {
+    id: '3',
+    displayName: 'CrazyKat!!',
+    username: 'cr4zy_ka7',
+    isVerified: true,
+    isOnline: true,
+    userAvatar: "https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2F38b842a2780c3029393dc04843c45954.jpg?alt=media&token=d5f99040-4781-4e60-9102-b3e4d9314d50"
+  }
 ];
 
-posts = [
+threads = [
   {
     threadType: 'common',
-    id: 'p1',
+    id: 't1',
     authorId: '1',
     textContent: "Hi! I'm new here, excited to meet new friends!",
     timeStamp: Date.now() - 1000 * 60 * 60,
-    likes: 50,
+    likes: ['1', '2', '3', '4', '5', '6'],
     reactions: [],
-    weaves: 28,
+    weaves: [
+      {
+        weaverId: '1',
+        isQuote: true,
+        quoteId: '1'
+      },
+      {
+        weaverId: '1',
+        isQuote: true,
+        quoteId: '1'
+      }
+    ],
     comments: [],
-    bookmarks: 12,
+    bookmarks: ['1', '2', '3', '4', '5', '6'],
   },
   {
     threadType: 'media',
-    id: 'p2',
+    id: 't2',
     authorId: '2',
     textContent: 'I really like these images i found online!',
-    likes: 18,
+    likes: ['1', '2', '3'],
     reactions: [],
-    weaves: 13,
+    weaves: [
+      {
+        weaverId: '1',
+        isQuote: true,
+        quoteId: '1'
+      }
+    ],
     comments: [],
-    bookmarks: 9,
+    bookmarks: ['1', '2', '3', '4', '5', '6'],
     mediaContent: [
       {
         alt: "hi",
@@ -114,9 +96,21 @@ posts = [
     ],
     timeStamp: Date.now() - 1000 * 60 * 30
   },
+  {
+    threadType: 'common',
+    id: 't3',
+    authorId: '3',
+    textContent: 'Did you know @catlover is crazier than me? lol',
+    timeStamp: Date.now() - 1000 * 60 * 27,
+    likes: [],
+    reactions: [],
+    weaves: [],
+    comments: [],
+    bookmarks: [],
+  }
 ];
 
-function jsonResponse(res: Response, statusCode: number, obj: any) {
+function jsonResponse(res: typeof ServerResponse, statusCode: number, obj: any) {
   const body = JSON.stringify(obj);
   res.writeHead(statusCode, {
     'Content-Type': 'application/json; charset=utf-8',
@@ -128,7 +122,7 @@ function jsonResponse(res: Response, statusCode: number, obj: any) {
   res.end(body);
 }
 
-function handleOptions(req: Request, res: Response) {
+function handleOptions(req: typeof IncomingMessage, res: typeof ServerResponse) {
   res.writeHead(204, {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
@@ -137,10 +131,10 @@ function handleOptions(req: Request, res: Response) {
   res.end();
 }
 
-function parseJsonBody(req: Request): Promise<any> {
+function parseJsonBody(req: typeof IncomingMessage): Promise<any> {
   return new Promise((resolve, reject) => {
     let data = '';
-    req.on('data', (chunk) => (data += chunk));
+    req.on('data', (chunk: any) => (data += chunk));
     req.on('end', () => {
       if (!data) return resolve(null);
       try {
@@ -153,7 +147,7 @@ function parseJsonBody(req: Request): Promise<any> {
   });
 }
 
-const server = http.createServer(async (req: Request, res: Response) => {
+const server = http.createServer(async (req: typeof IncomingMessage, res: typeof ServerResponse) => {
   try {
     if (req.method === 'OPTIONS') return handleOptions(req, res);
 
@@ -186,23 +180,40 @@ const server = http.createServer(async (req: Request, res: Response) => {
       return jsonResponse(res, 200, { token: `fake-token-${user.id}`, user });
     }
 
-    if (req.method === 'GET' && path === '/posts') {
-      return jsonResponse(res, 200, { posts });
+    if (req.method === 'GET' && path === '/threads') {
+      return jsonResponse(res, 200, { threads });
     }
 
-    if (req.method === 'POST' && path === '/posts') {
+    if (req.method === 'POST' && path === '/threads') {
       const body = await parseJsonBody(req);
       if (!body || !body.authorId || !body.content) return jsonResponse(res, 400, { error: 'authorId and content required' });
-      const id = `p${posts.length + 1}`;
-      let post: PostData;
-      post = { id, authorId: String(body.authorId), textContent: String(body.content), timeStamp: Date.now(), threadType: (body.threadType), mediaContent: (body.mediaContent), pollOptions: (body.pollOptions), audioContent: (body.audioContent), advancedContent: (body.advancedContent), likes: (body.likes), reactions: (body.reactions), weaves: (body.weaves), comments: (body.comments), bookmarks: (body.bookmarks) };
-      posts.unshift(post);
-      return jsonResponse(res, 201, { post });
+      const id = `p${threads.length + 1}`;
+      let thread: ThreadData;
+      thread = {
+        id,
+        authorId: String(body.authorId),
+        textContent: String(body.content),
+        timeStamp: Date.now() as number,
+        threadType: body.threadType as ThreadTypes,
+        mediaContent: body.mediaContent as MediaContent[],
+        poll: body.pollOptions as Poll[],
+        audioContent: body.audioContent as AudioContent,
+        advancedContent: String(body.advancedContent),
+        likes: body.likes as string[],
+        reactions: body.reactions as Reaction[],
+        weaves: body.weaves as ThreadWeave[],
+        comments: body.comments as ThreadData[],
+        bookmarks: body.bookmarks as string[],
+        isQuote: Boolean(body.isQuote),
+        quotedThreadId: String(body.quotedThreadId),
+      };
+      threads.unshift(thread);
+      return jsonResponse(res, 201, { thread });
     }
 
     if (req.method === 'GET' && path === '/feed') {
-      // merge posts with author info
-      const feed = posts.map((p) => ({ ...p, author: users.find((u) => u.id === p.authorId) || null }));
+      // merge threads with author info
+      const feed = threads.map((p) => ({ ...p, author: users.find((u) => u.id === p.authorId) || null }));
       return jsonResponse(res, 200, { feed });
     }
 
@@ -216,7 +227,7 @@ const server = http.createServer(async (req: Request, res: Response) => {
 
 server.listen(PORT, () => {
   console.log(`Example API listening on http://localhost:${PORT}`);
-  console.log('Endpoints: GET /health, GET /users, GET /users/:id, POST /auth/login, GET /posts, POST /posts, GET /feed');
+  console.log('Endpoints: GET /health, GET /users, GET /users/:id, POST /auth/login, GET /threads, POST /threads, GET /feed');
 });
 
 module.exports = server;
