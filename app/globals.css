@@ -50,6 +50,20 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+* ::-webkit-scrollbar {
+    background-color: transparent;
+    width: 8px;
+}
+
+* ::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50px;
+}
+
+* ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
 html,
 body {
     padding: 0;
@@ -64,6 +78,8 @@ body {
 }
 
 .main {
+    display: flex;
+    flex-direction: column;
     background-color: var(--bg-main);
 }
 
