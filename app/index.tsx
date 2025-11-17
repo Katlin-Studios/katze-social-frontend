@@ -4,8 +4,13 @@ import ThreadsList from '@/components/ui/ThreadsList';
 import { apiGet } from "./api";
 
 async function getApiHealth() {
-  const healthData = await apiGet("/health")
-  console.log("Health:", healthData.status)
+  try {
+    const healthData = await apiGet("/health")
+    console.log("Health:", healthData.status)
+  } catch (err: any) {
+    alert(`Couldn't connect to server!`)
+    console.error('Frontend could not retrieve API information', err.message, err.code)
+  }
 }
 
 getApiHealth()
@@ -24,7 +29,7 @@ export default function Index() {
       <HeaderExplore />
       <SectionsDisplay sections={indexSections} />
       <div className="timeline">
-          <ThreadsList />
+        <ThreadsList />
       </div>
     </div>
   );
