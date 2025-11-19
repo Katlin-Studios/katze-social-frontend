@@ -73,3 +73,11 @@ npx patch-package
 ```bash
 npx expo start -c
 ```
+
+---
+
+## Katlin Philosophy
+
+Katlin Studios maintains a philosophy of avoiding unnecessary abstraction and excessive libraries, favouring tailor-made and customised systems for in-depth understanding and optimisation, as well as concise and effective documentation. Therefore, here we provide documentation on how to use our own integrated frameworks for this project:
+
+- **[Custom Stores System](https://github.com/katlinstudios/katze-social-frontend/blob/main/docs/STORES.md)**
