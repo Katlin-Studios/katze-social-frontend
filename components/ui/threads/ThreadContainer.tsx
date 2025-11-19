@@ -5,19 +5,21 @@ import ThreadStats from "./ThreadStats";
 import { apiGet } from "@/app/api";
 import { ThreadData } from "@/interfaces/threads";
 
-export default function ThreadContainer({
-  authorId,
-  timestamp,
-  threadType = "common",
-  textContent = "",
-  mediaContent,
-  advancedContent,
-  likes = [],
-  reactions = [],
-  comments = [],
-  weaves = [],
-  bookmarks = []
-}: ThreadData) {
+export default function ThreadContainer(props: ThreadData) {
+    const {
+    authorId,
+    timestamp,
+    threadType = "common",
+    textContent = "",
+    mediaContent,
+    advancedContent,
+    likes = [],
+    reactions = [],
+    comments = [],
+    weaves = [],
+    bookmarks = []
+  } = props;
+
   const [userData, setUserData] = useState<{
     username: string,
     displayName: string,
@@ -75,7 +77,7 @@ export default function ThreadContainer({
 
         <div className="thread-text-content">{textContent}</div>
 
-        {threadType === "media" && <MediaContainer mediaContent={mediaContent} />}
+        {threadType === "media" && <MediaContainer mediaContent={mediaContent} thread={props} />}
 
         <ThreadStats likes={likes} reactions={reactions} comments={comments} weaves={weaves} bookmarks={bookmarks} />
       </div>
