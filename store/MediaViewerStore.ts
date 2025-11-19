@@ -1,4 +1,3 @@
-// MediaViewerStore.ts
 import { createStore } from "./storeFactory";
 import { ThreadData } from "@/interfaces/threads";
 

@@ -1,4 +1,3 @@
-// useMediaViewerStore.ts
 import { useEffect, useState } from "react";
 import { getState, subscribe } from "@/store/MediaViewerStore";
 
