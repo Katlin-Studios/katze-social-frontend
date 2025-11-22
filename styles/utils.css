@@ -1,0 +1,8 @@
+.shadow-abs {
+    position: absolute;
+    align-self: baseline;
+    justify-self: baseline;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    filter: blur(4px);
+}

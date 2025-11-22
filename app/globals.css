@@ -50,6 +50,11 @@
     -webkit-tap-highlight-color: transparent;
 }
 
+*:focus-visible {
+    outline: 2px solid white;
+    outline-offset: -2px;
+}
+
 * ::-webkit-scrollbar {
     background-color: transparent;
     width: 8px;
@@ -233,7 +238,7 @@ input {
     overflow: hidden;
 }
 
-.user-slot :hover {
+.user-slot:hover {
     background-color: #FFFFFF10;
 }
 
@@ -335,13 +340,18 @@ input {
     flex-grow: 1;
     min-width: 0;
     max-width: calc((100% / 3) - var(--num-measure));
+    border-radius: var(--num-measure);
     font-family: "Righteous";
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.ch-sp-card:hover {
+.ch-sp-card:hover, .ch-sp-card:focus {
     scale: 1.025;
+}
+
+.ch-sp-card:focus {
+    outline-offset: 0;
 }
 
 .ch-sp-card:active {

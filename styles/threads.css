@@ -5,10 +5,16 @@
     width: -webkit-fill-available;
     height: fit-content;
     border-bottom: solid 1px rgba(255, 255, 255, 0.15);
+    cursor: pointer;
 }
 
 .thread-container:hover {
     background-color: rgba(255, 255, 255, 0.04);
+}
+
+.thread-container:focus-visible {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.08);
 }
 
 .thread-content {
@@ -34,6 +40,11 @@
 
 .thread-displayname a {
     text-decoration: none;
+}
+
+.thread-displayname a:focus {
+    outline: none;
+    text-decoration: underline;
 }
 
 .thread-displayname a:hover {
@@ -117,6 +128,14 @@
     padding: 0;
 }
 
+.thread-stats button:hover {
+    opacity: 0.75;
+}
+
+.thread-stats .active {
+    opacity: 1;
+}
+
 .media-viewer {
     position: absolute;
     top: 0;
@@ -146,7 +165,8 @@
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    max-width: calc(var(--sides-width) * 1.5);
+    width: calc(var(--sides-width) * 1.25);
+    max-width: calc(var(--sides-width) * 1.25);
     background-color: var(--bg-main);
     border-left: solid 1px rgba(255, 255, 255, 0.15);
 }
@@ -159,4 +179,80 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.carousel-container button {
+    position: absolute;
+    align-self: center;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+#beforeMediaButton {
+    left: 0;
+}
+
+#nextMediaButton {
+    right: 0;
+}
+
+.carousel-container {
+  position: relative;
+  flex-grow: 1;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-slide img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@media (max-width: 768px) {
+    .media-viewer {
+        flex-direction: column;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+
+    .media-viewer .thread {
+        width: -webkit-fill-available;
+        max-width: none;
+        border: none;
+    }
+
+    .media-viewer .thread-container .thread-media-content {
+        display: none;
+    }
+
+    .media-viewer .thread {
+        background-color: rgba(0, 0, 0, 0);
+    }
+
+    .media-viewer .thread-container:hover {
+        background-color: rgba(0, 0, 0, 0);
+    }
 }
