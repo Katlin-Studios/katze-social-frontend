@@ -8,7 +8,7 @@ interface SpaceCardProps {
 
 export default function SpaceCard({ cover, title, icon, onlineCount }: SpaceCardProps) {
     return (
-        <div className="ch-sp-card" title={title + " Space"}>
+        <div className="ch-sp-card" title={title + " Space"} tabIndex={0}>
             <div className="sp-cover" role="img" style={{ backgroundImage: `url(${cover})` }}>
                 <div className="dark-gradient"></div>
 

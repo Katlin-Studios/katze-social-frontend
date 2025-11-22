@@ -20,7 +20,7 @@ interface UserSlotProps {
 
 export default function UserSlot({ userInfo, slotStyle }: UserSlotProps) {
     return (
-        <div className="user-slot" style={{
+        <div className="user-slot" tabIndex={0} style={{
             borderRadius: slotStyle.isRound ? "8px" : "0",
             backgroundColor: slotStyle.bgColor ? slotStyle.bgColor : "transparent",
             backgroundImage: slotStyle.bgGradient

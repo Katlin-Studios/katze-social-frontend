@@ -5,7 +5,7 @@ import ThreadStats from "./ThreadStats";
 import { apiGet } from "@/app/api";
 import { ThreadData } from "@/interfaces/threads";
 
-export default function ThreadContainer(props: ThreadData) {
+export default function ThreadContainer(thread: ThreadData) {
     const {
     authorId,
     timestamp,
@@ -18,7 +18,7 @@ export default function ThreadContainer(props: ThreadData) {
     comments = [],
     weaves = [],
     bookmarks = []
-  } = props;
+  } = thread;
 
   const [userData, setUserData] = useState<{
     username: string,
@@ -52,7 +52,7 @@ export default function ThreadContainer(props: ThreadData) {
   }
 
   return (
-    <div className="thread-container">
+    <article className="thread-container" tabIndex={0}>
       {/* avatar */}
       <div
         role="img"
@@ -77,10 +77,10 @@ export default function ThreadContainer(props: ThreadData) {
 
         <div className="thread-text-content">{textContent}</div>
 
-        {threadType === "media" && <MediaContainer mediaContent={mediaContent} thread={props} />}
+        {threadType === "media" && <MediaContainer mediaContent={mediaContent} thread={thread} />}
 
         <ThreadStats likes={likes} reactions={reactions} comments={comments} weaves={weaves} bookmarks={bookmarks} />
       </div>
-    </div>
+    </article>
   );
 }

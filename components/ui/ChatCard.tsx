@@ -17,7 +17,7 @@ export default function ChatCard({ cover, title, onlineCount, currentActivity }:
 
 
     return (
-        <div className="ch-sp-card" title={title + " Chat"}>
+        <div className="ch-sp-card" title={title + " Chat"} tabIndex={0}>
             <div className="ch-cover" role="img" style={{ backgroundImage: `url(${cover})` }}>
                 <div className="dark-gradient"></div>
 

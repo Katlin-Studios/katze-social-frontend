@@ -9,7 +9,7 @@ interface MediaContainerProps {
 
 export default function MediaContainer({ mediaContent, thread }: MediaContainerProps) {
     return (
-        <div className="thread-media-content"
+        <div className="thread-media-content" tabIndex={0}
             style={{
                 aspectRatio:
                     mediaContent?.length === 1
