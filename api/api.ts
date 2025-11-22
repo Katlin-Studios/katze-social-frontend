@@ -184,6 +184,14 @@ const server = http.createServer(async (req: typeof IncomingMessage, res: typeof
       return jsonResponse(res, 200, { threads });
     }
 
+    const threadIdMatch = path.match(/^\/threads\/(.+)$/);
+    if (req.method === 'GET' && threadIdMatch) {
+      const id = threadIdMatch[1];
+      const thread = threads.find((t) => t.id === id);
+      if (!thread) return jsonResponse(res, 404, { error: 'Thread not found' });
+      return jsonResponse(res, 200, { thread })
+    }
+
     if (req.method === 'POST' && path === '/threads') {
       const body = await parseJsonBody(req);
       if (!body || !body.authorId || !body.content) return jsonResponse(res, 400, { error: 'authorId and content required' });
