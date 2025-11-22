@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ThreadContainer from "./threads/ThreadContainer";
 import { timeAgo } from "@/app/utils";
-import { apiGet } from "@/app/api";
+import { apiGet, fetchAllThreads } from "@/app/api";
 
 export default function ThreadsList() {
   const [threads, setPosts] = useState<any[]>([]);
@@ -9,14 +9,14 @@ export default function ThreadsList() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const data = await apiGet("/threads");
-        setPosts(data.threads);
-      } catch (err) {
-        console.error(err);
+        const threads = await fetchAllThreads(true);
+        setPosts(threads);
+      } catch (err: any) {
+        console.error('An error ocurred while retrieving all threads', err.code, err.message);
       }
     }
 
-    fetchPosts();
+    !(threads.length > 0) && fetchPosts();
   }, []);
 
   return (
