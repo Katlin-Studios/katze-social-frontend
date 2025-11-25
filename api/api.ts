@@ -66,6 +66,38 @@ threads = [
   },
   {
     threadType: 'media',
+    id: 'tt',
+    authorId: '1',
+    textContent: 'yo this is fire!!',
+    likes: ['1', '2', '3'],
+    reactions: [],
+    weaves: [
+      {
+        weaverId: '1',
+        isQuote: true,
+        quoteId: '1'
+      }
+    ],
+    comments: [],
+    bookmarks: ['1', '2', '3', '4', '5', '6'],
+    timeStamp: Date.now()  - 1000 * 60 * 45,
+    mediaContent: [
+      {
+        src: 'https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2Fcool_tl.png?alt=media&token=9d16d9a7-97fd-469e-b885-7befddfceb12'
+      },
+      {
+        src: 'https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2Fcool_tr.png?alt=media&token=a296947a-c950-4ff9-b8c8-690539a4f9ce'
+      },
+      {
+        src: 'https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2Fcool_bl.png?alt=media&token=ecf94ed3-7378-4e11-898f-3913065b6510'
+      },
+      {
+        src: 'https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2Fcool_br.png?alt=media&token=2d54bcad-0440-4779-9e4b-ca0c95cd7ce8'
+      }
+    ]
+  },
+  {
+    threadType: 'media',
     id: 't2',
     authorId: '2',
     textContent: 'I really like these images i found online!',
