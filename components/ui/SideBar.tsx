@@ -17,16 +17,8 @@ export default function SideBar() {
 
     return (
         <div className="sidebar">
-            <div 
-                role="img" 
-                style={{
-                    position: "static",
-                    width: "112px", 
-                    height: "41px", 
-                    backgroundImage: "url(./sidebar_logo.png)",
-                }}
-            ></div>
-            
+            <div role="img" className="logo"></div>
+
             <div className="sidebar-buttons">
                 {sideBarButtons.map((button, index) => (
                     <SideBarButton title={button.title} icon={button.icon} key={index} />
@@ -35,9 +27,9 @@ export default function SideBar() {
 
             <div className="sidebar-buttons" style={{ flexGrow: 1, alignItems: "center", justifyContent: "end" }}>
                 <SideBarButton title="add_thread" icon="library-add" isAddThread />
-                
-                <div title="Profile" style={{height: "calc(var(--num-measure) * 8)", width: "-webkit-fill-available", cursor: "pointer"}}>
-                    <UserSlot userInfo={{displayName: "SadGabi 🖤", username: "sadgabi20"}} slotStyle={{isRound: true}} />
+
+                <div title="Profile" style={{ height: "calc(var(--num-measure) * 8)", width: "-webkit-fill-available", cursor: "pointer" }}>
+                    <UserSlot userInfo={{ displayName: "SadGabi 🖤", username: "sadgabi20" }} slotStyle={{ isRound: true }} />
                 </div>
             </div>
         </div>)
