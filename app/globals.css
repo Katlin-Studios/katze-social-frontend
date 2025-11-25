@@ -82,10 +82,15 @@ body {
     display: flex;
 }
 
+div:has(.main) {
+    background-color: var(--bg-main);
+}
+
 .main {
     display: flex;
     flex-direction: column;
     background-color: var(--bg-main);
+    max-width: 600px;
 }
 
 button {
@@ -124,6 +129,12 @@ input {
     flex-grow: 1;
     margin: 0 calc(var(--num-measure) * 2);
     max-width: var(--sides-width);
+}
+
+.sidebar .logo {
+    width: 112px;
+    height: 41px;
+    background-image: url("./sidebar_logo.png");
 }
 
 .sidebar-buttons {
@@ -252,6 +263,11 @@ input {
     right: 0;
     width: 100%;
     height: 100%;
+}
+
+.user-slot-info div {
+    white-space: nowrap;
+    white-space-collapse: ellipsis;
 }
 
 .sections-display {
@@ -402,13 +418,14 @@ input {
     align-items: center;
     gap: calc(var(--num-measure) * 0.5);
     padding: calc(var(--num-measure) * 0.5);
+    max-width: -webkit-fill-available;
     font-weight: 600;
     font-size: 12;
 }
 
 .online-badge {
-    width: var(--num-measure);
-    height: var(--num-measure);
+    min-width: var(--num-measure);
+    min-height: var(--num-measure);
     background-color: var(--accent-2);
     border-radius: 50%;
 }
@@ -439,6 +456,52 @@ input {
 }
 
 
+@media (max-width: 1128px) {
+    .sidebar {
+        margin-inline: var(--num-measure);
+        max-width: 56px;
+    }
+
+    .sidebar .logo {
+        align-self: center;
+        width: 40px;
+        height: 40px;
+        background-image: url(https://firebasestorage.googleapis.com/v0/b/katze-social.firebasestorage.app/o/public%2Flogo_s.png?alt=media&token=fd42188c-9a78-440a-83f9-bc72aeffd518);
+    }
+
+    .sidebar button {
+        margin-inline: var(--num-measure);
+    }
+
+    .button-title {
+        display: none;
+    }
+
+    .user-slot {
+        margin-top: var(--num-measure);
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+
+    .user-slot .user-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-slot-img {
+        display: none;
+    }
+
+    .user-slot-info {
+        display: none;
+    }
+
+    .infobar {
+        display: none;
+    }
+}
+
 @media (max-width: 620px) {
     .sides {
         display: none;
@@ -450,5 +513,14 @@ input {
 
     .header {
         display: flex;
+    }
+
+    .user-slot {
+        justify-content: start;
+        padding: var(--num-measure) calc(var(--num-measure) * 2);
+    }
+
+    .user-slot-info {
+        display: block;
     }
 }
