@@ -18,7 +18,7 @@ export default function SideBarButton({ title, icon, isAddThread }: SideBarButto
     return (
         <button id={id + "SideBarButton"} title={name} className={isAddThread && "main-button" || undefined}>
             <MaterialIcons name={icon as keyof typeof MaterialIcons.glyphMap} size={24} color="white" />
-            {name}
+            <span className="button-title">{name}</span>
         </button>
     )
 }
