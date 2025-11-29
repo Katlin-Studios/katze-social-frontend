@@ -1,10 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-
-interface SideBarButtonProps {
-    title: string,
-    icon: string,
-    isAddThread?: boolean | false
-}
+import { SideBarButtonProps } from "@/interfaces/layout";
 
 export default function SideBarButton({ title, icon, isAddThread }: SideBarButtonProps) {
     const name = title
